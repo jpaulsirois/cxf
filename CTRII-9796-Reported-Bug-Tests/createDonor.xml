@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="b9746e5e-6483-42dc-9ff3-64ba096b939d" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="createDonor" searchProperties="true" timeout="0" xmlns:con="http://eviware.com/soapui/config"><con:description id="8cdd0e04-68b2-41b7-89e2-792d384b3812">Create new CTR DWL donor.</con:description><con:settings><con:setting id="b9746e5e-6483-42dc-9ff3-64ba096b939dfileName">createDonor</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="Setup donor fields" id="c68f3f0d-db01-49ca-922a-97ec5212ca70"><con:settings/><con:config><script>import cbs.DateUtils;
+import cbs.LookupUtils;
+import cbs.CtrUtils;
+
+def dateUtils = new DateUtils()
+def lookupUtils = new LookupUtils()
+def ctrUtils= new CtrUtils()
+
+def tCase = testRunner.getTestCase()
+Date dateNow = new Date()
+
+def  donorRndId = ctrUtils.getRndId().toString()
+tCase.setPropertyValue("donorRndId",donorRndId )	
+
+def localDonorId = donorRndId
+tCase.setPropertyValue("localDonorId",("LocalId-"+donorRndId ))
+
+Date dateOfBirth = ctrUtils.getRndDOB(20,50)
+tCase.setPropertyValue("dateOfBirth", dateUtils.formatDate( dateOfBirth ))
+
+//genderId = lookupUtils.getRandomLookupId("LT_GENDER")
+tCase.setPropertyValue("genderId", lookupUtils.getRandomLookupId("LT_GENDER") )
+
+height = ctrUtils.getRndHeight(dateUtils.formatDate( dateOfBirth ))
+tCase.setPropertyValue("height", height.toString() )
+
+weight = ctrUtils.getRndWeight(dateUtils.formatDate( dateOfBirth ))
+tCase.setPropertyValue("weight", weight.toString() )
+
+//bloodGroupId = lookupUtils.getRandomLookupId("LT_ABO")
+tCase.setPropertyValue("bloodGroupId", lookupUtils.getRandomLookupId("LT_ABO") )
+
+rhId = lookupUtils.getRandomLookupId("LT_RH")
+tCase.setPropertyValue("rhId", rhId )
+
+Date mostRecentDialysisDate = ctrUtils.getRandomDateFromInterval(dateOfBirth, dateNow);
+tCase.setPropertyValue("mostRecentDialysisDate", dateUtils.formatDate(mostRecentDialysisDate))
+//    log.info("mostRecentDialysisDate: "+mostRecentDialysisDate)
+
+Date listDateTime = ctrUtils.getRandomDateFromInterval(mostRecentDialysisDate, dateNow);
+tCase.setPropertyValue("listDateTime", dateUtils.formatDate(listDateTime))
+//log.info("listDateTime: "+listDateTime)
+
+Date medicalStatusChangeDate = ctrUtils.getRandomDateFromInterval(listDateTime, dateNow);
+tCase.setPropertyValue("listDateTime", dateUtils.formatDate(medicalStatusChangeDate))
+//    log.info("medicalStatusChangeDate: "+medicalStatusChangeDate)
+
+    log.info("The end")
+</script></con:config></con:testStep><con:testStep type="request" id="5d893924-4e0f-4511-a11e-ef8a64cd0ef9" name="addDwlDonor-Fields minimal-Organ kidney-heart"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>addDonor</con:operation><con:request name="addDwlDonor-Fields minimal-Organ kidney-heart" id="3ca11a5c-0b93-4998-a1a4-941026cfd19a"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">\r
+   <soapenv:Header>\r
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">\r
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r
+            <wsse:Username>WS_BC</wsse:Username>\r
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>\r
+         </wsse:UsernameToken>\r
+      </wsse:Security>\r
+   </soapenv:Header>\r
+   <soapenv:Body>\r
+      <ctr:addDonor>\r
+         <arg0>\r
+            <localDonorId>${#TestCase#donorRndId}</localDonorId>\r
+            <dateOfBirth>${#TestCase#dateOfBirth}</dateOfBirth>\r
+            <height>${#TestCase#height}</height>\r
+            <weight>${#TestCase#weight}</weight>\r
+            <gender>\r
+               <id>${#TestCase#genderId}</id>\r
+            </gender>\r
+            <bloodType>\r
+               <id>${#TestCase#bloodGroupId}</id>\r
+            </bloodType>\r
+            <donorType>\r
+               <bizRef>DECEASED_DONOR</bizRef>\r
+            </donorType>\r
+            <facilities>\r
+               <id>${#TestSuite#donorFacility-1-Id}</id>\r
+            </facilities>\r
+            <facilities>\r
+               <id>${#TestSuite#donorFacility-2-Id}</id>\r
+            </facilities>\r
+            <consentedOrgans>\r
+               <consentedOrgan>KIDNEYS</consentedOrgan>\r
+               <consentedState>\r
+                  <bizRef>CONSENTED</bizRef>\r
+               </consentedState>\r
+               <!--<stateChangeDate>?</stateChangeDate>-->\r
+            </consentedOrgans>\r
+            <consentedOrgans>\r
+               <consentedOrgan>HEART</consentedOrgan>\r
+               <consentedState>\r
+                  <bizRef>CONSENTED</bizRef>\r
+               </consentedState>\r
+               <!--<stateChangeDate>?</stateChangeDate>-->\r
+            </consentedOrgans>\r
+            <donorDeathType>\r
+               <id>1</id>\r
+            </donorDeathType>\r
+         </arg0>\r
+      </ctr:addDonor>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="bd57a20c-f274-49df-80a0-d0a99fabdd90" name="Not SOAP Fault"/><con:assertion type="Schema Compliance" id="45867bc1-2e36-4807-8a63-030c1078384b" name="Schema Compliance"><con:configuration/></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/addDonorRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="Save donor Id" id="5aaa2046-d86a-4eca-bc5b-8eb2588f1942"><con:settings/><con:config><script>def tSuite = testRunner.getTestCase().getTestSuite()
+def tCase = testRunner.getTestCase()
+
+def donorId = context.expand( '${addDwlDonor-Fields minimal-Organ kidney-heart#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:addDonorResponse[1]/return[1]/nationalDonorId[1]}' )
+tSuite.setPropertyValue("donorId",  donorId)
+
+</script></con:config></con:testStep><con:testStep type="request" id="b31e4b9f-ef1e-4a9f-ad94-3e93653d0608" name="updateDonorDeath"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>updateDonorDeath</con:operation><con:request name="updateDonorDeath" id="40caed8a-fbed-424d-b049-0397dda8246f"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">\r
+   <soapenv:Header>\r
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">\r
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r
+            <wsse:Username>WS_BC</wsse:Username>\r
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>\r
+         </wsse:UsernameToken>\r
+      </wsse:Security>\r
+   </soapenv:Header>\r
+   <soapenv:Body>\r
+      <ctr:updateDonorDeath>\r
+         <arg0>\r
+            <countryOfDeath>\r
+               <bizRef>CAN</bizRef>\r
+            </countryOfDeath>\r
+            <province_StateOfDeath>\r
+               <bizRef>QC</bizRef>\r
+            </province_StateOfDeath>\r
+            <nationalDonorId>${#TestSuite#donorId}</nationalDonorId>\r
+            <deathCause>\r
+               <id>2</id>\r
+            </deathCause>\r
+            <commentsOnDeath>This is a cause of death comment...</commentsOnDeath>\r
+         </arg0>\r
+      </ctr:updateDonorDeath>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="a6066f54-281d-486c-912c-0039c6af881f" name="Not SOAP Fault"/><con:assertion type="Schema Compliance" id="b8c35779-2e3d-4fb1-bdc5-5c18392e3fb7" name="Schema Compliance"><con:configuration/></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/updateDonorDeathRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" id="179574e7-d5f7-4dfa-bfc2-fadd073ab051" name="updateHlaTyping"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>updateHlaTyping</con:operation><con:request name="updateHlaTyping" id="cc290686-a210-4f8b-a267-f096d8486dec"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:updateHlaTyping>
+         <arg0>
+            <nationalId>${#TestSuite#donorId}</nationalId>
+            <confirmHLATyping>true</confirmHLATyping>
+            <drb345TestedNotPresent>true</drb345TestedNotPresent>
+            <bw4>POSITIVE</bw4>
+            <bw6>POSITIVE</bw6>
+            <listMoleculars>
+               <molecularType>A_1</molecularType>
+               <molecular>01:01</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>A_2</molecularType>
+               <molecular>01:01</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>B_1</molecularType>
+               <molecular>07:02</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>B_2</molecularType>
+               <molecular>07:02</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>C_1</molecularType>
+               <molecular>01:02</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>C_2</molecularType>
+               <molecular>01:02</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>DPA1_1</molecularType>
+               <molecular>01:04</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>DPA1_2</molecularType>
+               <molecular>01:04</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>DPB1_1</molecularType>
+               <molecular>109:01</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>DPB1_2</molecularType>
+               <molecular>109:01</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>DQA1_1</molecularType>
+               <molecular>01:02</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>DQA1_2</molecularType>
+               <molecular>01:02</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>DQB1_1</molecularType>
+               <molecular>02:03</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>DQB1_2</molecularType>
+               <molecular>02:03</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>DRB1_1</molecularType>
+               <molecular>01:01</molecular>
+            </listMoleculars>
+            <listMoleculars>
+               <molecularType>DRB1_2</molecularType>
+               <molecular>01:01</molecular>
+            </listMoleculars>
+            <dr51>false</dr51>
+            <dr52>false</dr52>
+            <dr53>false</dr53>
+         </arg0>
+      </ctr:updateHlaTyping>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="50f3c78c-ab6f-44f4-83b8-43d747ca3aba" name="Not SOAP Fault"/><con:assertion type="Schema Compliance" id="ae6c4a37-4f5a-43d5-a02c-0ab079c8efca" name="Schema Compliance"><con:configuration/></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/updateHlaTypingRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:properties><con:property><con:name>dateOfBirth</con:name><con:value>1977-08-27</con:value></con:property><con:property><con:name>genderId</con:name><con:value>2</con:value></con:property><con:property><con:name>height</con:name><con:value>142</con:value></con:property><con:property><con:name>weight</con:name><con:value>109</con:value></con:property><con:property><con:name>bloodGroupId</con:name><con:value>4</con:value></con:property><con:property><con:name>rhId</con:name><con:value>1</con:value></con:property><con:property><con:name>mostRecentDialysisDate</con:name><con:value>2013-03-30</con:value></con:property><con:property><con:name>listDateTime</con:name><con:value>2021-09-11</con:value></con:property><con:property><con:name>localDonorId</con:name><con:value>LocalId-16940117476</con:value></con:property><con:property><con:name>donorRndId</con:name><con:value>16940117476</con:value></con:property><con:property><con:name>matchCount</con:name><con:value>61</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>b92ea603-51dc-4a5d-8c0e-93a96b99dfc0</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>6d21700a-d34e-4d62-9653-e5d6e9cf616e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>74d8eca5-6b98-4206-8dd2-b21da7ca86b3</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="9dc93969-021b-44b8-b411-ae84f7e3c4cf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="e9a5af60-ffca-453b-bb58-ce01a1afd088"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a85e0134-5f13-45fb-a70f-506a7b0f6cb7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="12d06a30-f96b-43e6-81dd-fbfd63c0fa7d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="e95a6a6a-c8e1-43f2-8369-17f838f8c544"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="c36b7646-8f30-45c2-8ff8-51c9e8ef7355"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="e865aa34-7c7c-4f2f-b54e-52909cc8c871"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="cbc6d9e7-0009-492b-982d-08d836ee3d2e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="0db12ce5-e383-4c13-9970-577d34e87183"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

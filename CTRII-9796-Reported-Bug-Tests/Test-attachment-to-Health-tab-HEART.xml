@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="b2addcc0-1137-409c-9317-0cd792f3fb16" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Test attachment to Health tab-HEART" searchProperties="true" timeout="0" xmlns:con="http://eviware.com/soapui/config"><con:description id="11ec4afe-e6cb-4821-ba3a-bd0c84d91c48">Verify that UploadAttachment to  recipient PATIENT_HEALTH section for a recipient  with  an  HEART organ  request.
+ - check  that  it uploaded withoout  error
+ - check  that it is listed by  findAttachment()
+</con:description><con:settings><con:setting id="b2addcc0-1137-409c-9317-0cd792f3fb16fileName">Test-attachment-to-Health-tab-HEART</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="ProjectData" id="ef6a8e2e-c8b1-4141-9c50-6c70da187b30"><con:settings/><con:config><script>def tSuite = testRunner.getTestCase().getTestSuite()
+
+    tSuite.setPropertyValue("donorDeathTypeId", "1")
+    tSuite.setPropertyValue("donorFacility-1-Id", "17")
+    tSuite.setPropertyValue("donorFacility-2-Id", "3")
+    tSuite.setPropertyValue("donorTypeId", "4")
+    tSuite.setPropertyValue("recipientHlaLabId", "93")
+    tSuite.setPropertyValue("recipientOdoId", "23")
+    tSuite.setPropertyValue("recipientPrefix", "QT-")
+    tSuite.setPropertyValue("recipientTxCenterId", "92")
+    tSuite.setPropertyValue("recipientProvId", "11")
+    tSuite.setPropertyValue("phinProvince", "11")
+    tSuite.setPropertyValue("city", "Montreal")
+    //tSuite.setPropertyValue("recipientId", null)
+    //tSuite.setPropertyValue("donorId", null)
+</script></con:config></con:testStep><con:testStep type="groovy" name="TestSuiteData" id="8d7ecbc2-caf2-424b-9c72-20e5b6a6e8df"><con:settings/><con:config><script>def tSuite = testRunner.getTestCase().getTestSuite()
+
+    tSuite.setPropertyValue("donorDeathTypeId", "1")
+    tSuite.setPropertyValue("donorFacility-1-Id", "17")
+    tSuite.setPropertyValue("donorFacility-2-Id", "3")
+    tSuite.setPropertyValue("donorTypeId", "4")
+    tSuite.setPropertyValue("recipientHlaLabId", "93")
+    tSuite.setPropertyValue("recipientOdoId", "23")
+    tSuite.setPropertyValue("recipientPrefix", "QT-")
+    tSuite.setPropertyValue("recipientTxCenterId", "92")
+    tSuite.setPropertyValue("recipientProvId", "11")
+    tSuite.setPropertyValue("phinProvince", "11")
+    tSuite.setPropertyValue("city", "Montreal")
+    //tSuite.setPropertyValue("recipientId", null)
+    //tSuite.setPropertyValue("donorId", null)
+</script></con:config></con:testStep><con:testStep type="groovy" name="Setup recipient fields" id="43f7f5f8-f2db-49dc-a3d4-4b5a84869d7b"><con:settings/><con:config><script>import cbs.DateUtils;
+import cbs.LookupUtils;
+import cbs.CtrUtils;
+
+    def dateUtils = new DateUtils()
+    def lookupUtils = new LookupUtils()
+    def ctrUtils= new CtrUtils()
+
+    def tCase = testRunner.getTestCase()
+    Date dateNow = new Date()
+
+    tCase.setPropertyValue("recRndId", ctrUtils.getRndId().toString())
+
+    Date dateOfBirth = ctrUtils.getRndDOB(20,50)
+    tCase.setPropertyValue("dateOfBirth", dateUtils.formatDate( dateOfBirth ))
+
+    //genderId = lookupUtils.getRandomLookupId("LT_GENDER")
+    tCase.setPropertyValue("genderId", lookupUtils.getRandomLookupId("LT_GENDER") )
+
+    height = ctrUtils.getRndHeight(dateUtils.formatDate( dateOfBirth ))
+    tCase.setPropertyValue("height", height.toString() )
+
+    weight = ctrUtils.getRndWeight(dateUtils.formatDate( dateOfBirth ))
+    tCase.setPropertyValue("weight", weight.toString() )
+
+    //bloodGroupId = lookupUtils.getRandomLookupId("LT_ABO")
+    tCase.setPropertyValue("bloodGroupId", lookupUtils.getRandomLookupId("LT_ABO") )
+
+    rhId = lookupUtils.getRandomLookupId("LT_RH")
+    tCase.setPropertyValue("rhId", rhId )
+
+    Date mostRecentDialysisDate = ctrUtils.getRandomDateFromInterval(dateOfBirth, dateNow);
+    tCase.setPropertyValue("mostRecentDialysisDate", dateUtils.formatDate(mostRecentDialysisDate))
+    log.info("mostRecentDialysisDate: "+mostRecentDialysisDate)
+
+    Date listDateTime = ctrUtils.getRandomDateFromInterval(mostRecentDialysisDate, dateNow);
+    tCase.setPropertyValue("listDateTime", dateUtils.formatDate(listDateTime))
+    log.info("listDateTime: "+listDateTime)
+
+    Date medicalStatusChangeDate = ctrUtils.getRandomDateFromInterval(listDateTime, dateNow);
+    tCase.setPropertyValue("listDateTime", dateUtils.formatDate(medicalStatusChangeDate))
+    log.info("medicalStatusChangeDate: "+medicalStatusChangeDate)
+
+    log.info("The end")
+</script></con:config></con:testStep><con:testStep type="request" id="91af5923-7b4a-4697-a9bf-4b7c06959df6" name="Recipient-Fields minimal-Ror kidney - heart"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>addRecipientByNationalRecipientId</con:operation><con:request name="Recipient-Fields minimal-Ror kidney - heart" id="26b4eb36-2fe6-4d92-998b-66887b7da136"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_QC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:addRecipientByNationalRecipientId>
+         <arg0>
+            <firstName>Fn-${#TestCase#recRndId}</firstName>
+            <lastName>Ln-${#TestCase#recRndId}</lastName>
+            <city>Montreal</city>
+            <province>
+               <id>11</id>
+               <!--<bizRef>QC</bizRef>-->
+            </province>
+            <dateOfBirth>${#TestCase#dateOfBirth}</dateOfBirth>
+            <gender>
+               <id>${#TestCase#genderId}</id>
+            </gender>
+            <height>${#TestCase#height}</height>
+            <weight>${#TestCase#weight}</weight>
+            <localRecipientId>localId-${#TestCase#recRndId}</localRecipientId>
+            <phin>QT-${#TestCase#recRndId}</phin>
+            <transplantType>
+               <id>1</id>
+            </transplantType>
+            <bloodGroup>
+               <id>${#TestCase#bloodGroupId}</id>
+            </bloodGroup>
+            <rh>
+               <id>${#TestCase#rhId}</id>
+            </rh>
+            <organRequests>
+               <!--heart-->
+               <id>0</id>
+               <organMedicalStatus>
+                  <id>2</id>
+               </organMedicalStatus>
+               <organRequired>
+                  <id>1</id>
+               </organRequired>
+               <listDateTime>${#TestCase#listDateTime}</listDateTime>
+               <status>
+                  <id>2</id>
+               </status>
+            </organRequests>
+            <opo>
+               <!--<id>${#Project#recipientOdoId}</id>-->
+               <id>23</id>
+               <!--<facilityName>Transplant-Québec</facilityName>-->
+            </opo>
+            <!--Optional:-->
+            <transplantCentre>
+               <id>${#TestSuite#recipientTxCenterId}</id>
+            </transplantCentre>
+            <!--<referralCentres>-->
+            <!--<id>?</id>-->
+            <!--</referralCentres>-->
+            <hlaLab>
+               <id>${#TestSuite#recipientHlaLabId}</id>
+            </hlaLab>
+            <phinProvince>
+               <!--<id>${#Project#phinProvince}</id>-->
+               <id>11</id>
+            </phinProvince>
+         </arg0>
+      </ctr:addRecipientByNationalRecipientId>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="ddd7baa0-eee3-4552-8c61-5391202d2861" name="Not SOAP Fault"/><con:assertion type="Schema Compliance" id="fa9aef0c-f842-48cf-b0f2-4ac7e15fcff9" name="Schema Compliance"><con:configuration/></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/addRecipientByNationalRecipientIdRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="Save recipient" id="99c9ab50-a74b-4956-84c1-89c1e3c7004d"><con:settings/><con:config><script>def tCase = testRunner.getTestCase()
+
+def recipientId = context.expand( '${Recipient-Fields minimal-Ror kidney - heart#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:addRecipientByNationalRecipientIdResponse[1]/return[1]/nationalRecipientId[1]}' )
+tCase.setPropertyValue("recipientId", recipientId )
+
+def rorIdHeart = context.expand( '${Recipient-Fields minimal-Ror kidney - heart#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:addRecipientByNationalRecipientIdResponse[1]/return[1]/organRequests[1]/id[1]}' )
+tCase.setPropertyValue("rorIdHeart", rorIdHeart )
+</script></con:config></con:testStep><con:testStep type="request" id="aab76c5a-20ff-4e0b-aa07-86df00dba596" name="uploadAttachment-recipient-PATIENT_HEALTH"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>uploadAttachment</con:operation><con:request name="uploadAttachment-recipient-PATIENT_HEALTH" id="a0d0a6bc-8db1-4acd-b81b-ba63639327f0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">\r
+   <soapenv:Header>\r
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">\r
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r
+            <wsse:Username>WS_QC</wsse:Username>\r
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>\r
+         </wsse:UsernameToken>\r
+      </wsse:Security>\r
+   </soapenv:Header>\r
+   <soapenv:Body>\r
+      <ctr:uploadAttachment>\r
+         <arg0>\r
+            <attachmentID>0</attachmentID>\r
+            <nationalID>${#TestCase#recipientId}</nationalID>\r
+            <attachmentSection>\r
+               <bizRef>PATIENT_HEALTH</bizRef>\r
+            </attachmentSection>\r
+            <description>Patient-Health attachment to  patient with  a Heart organ request. # 1</description>\r
+            <sideBysideFlag>true</sideBysideFlag>\r
+            <ownerID>${#TestCase#rorIdHeart}</ownerID>\r
+         </arg0>\r
+         <arg1>\r
+            <attachmentData>BaseHealthService</attachmentData>\r
+            <filename>${#Project#attachmentsFolder}/all-tests.html</filename>\r
+         </arg1>\r
+      </ctr:uploadAttachment>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="0bfa25d2-9161-4e50-8479-d897b5621dc9" name="Not SOAP Fault"/><con:assertion type="Schema Compliance" id="0eb0dc3e-eee0-4231-ad2b-262061326422" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Simple Contains" name="Contains: &lt;ownerID>" id="9006b14e-b722-4891-954c-79473ca5e192"><con:configuration><token>&lt;ownerID></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:assertion type="Simple Contains" name="Contains: &lt;uploadedBy>" id="b17f4b06-2d88-4ec4-92e0-153c01faa788"><con:configuration><token>&lt;uploadedBy></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/uploadAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="Save AttachmentId , ownerID" id="fad61f69-8e06-48a0-bffd-450cf992f268"><con:settings/><con:config><script>def tCase = testRunner.getTestCase()
+
+def attachmentId = context.expand( '${uploadAttachment-recipient-PATIENT_HEALTH#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:uploadAttachmentResponse[1]/return[1]/attachmentID[1]}' )
+tCase.setPropertyValue("attachmentId", attachmentId )
+
+def ownerId = context.expand( '${uploadAttachment-recipient-PATIENT_HEALTH#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:uploadAttachmentResponse[1]/return[1]/ownerID[1]}' )
+tCase.setPropertyValue("ownerId", ownerId )</script></con:config></con:testStep><con:testStep type="request" id="9452c914-bc33-49f9-927a-3bb00d84e483" name="findAttachments-Recipient-all sections"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>findAttachments</con:operation><con:request name="findAttachments-Recipient-all sections" id="91c04e7e-f1fa-4e8f-ae93-7f98497cb153"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_QC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:findAttachments>
+         <arg0>${#TestCase#recipientId}</arg0>
+         
+      </ctr:findAttachments>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="f75103c6-95fc-4e89-8bcd-bfdaff813343" name="Not SOAP Fault"/><con:assertion type="Schema Compliance" id="b43fa073-f681-491d-a8b4-8ab1d91ea794" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Simple Contains" id="ae639565-4acc-4ef5-b2e8-fedb29d7ac66" name="Contains:  attachmentId"><con:configuration><token>${#TestCase#attachmentId}</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:assertion type="Simple Contains" id="242bb142-2869-4f60-b98b-648df2dcacb6" name="Contains: ownerID"><con:configuration><token>${#TestCase#attachmentId}</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/findAttachmentsRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:properties><con:property><con:name>recRndId</con:name><con:value>16940118012</con:value></con:property><con:property><con:name>dateOfBirth</con:name><con:value>1977-09-04</con:value></con:property><con:property><con:name>genderId</con:name><con:value>1</con:value></con:property><con:property><con:name>height</con:name><con:value>200</con:value></con:property><con:property><con:name>weight</con:name><con:value>47</con:value></con:property><con:property><con:name>bloodGroupId</con:name><con:value>3</con:value></con:property><con:property><con:name>rhId</con:name><con:value>1</con:value></con:property><con:property><con:name>mostRecentDialysisDate</con:name><con:value>1997-10-08</con:value></con:property><con:property><con:name>listDateTime</con:name><con:value>2016-11-05</con:value></con:property><con:property><con:name>recipientId</con:name><con:value>CTR051206</con:value></con:property><con:property><con:name>rorIdHeart</con:name><con:value>158978</con:value></con:property><con:property><con:name>attachmentId</con:name><con:value>75369</con:value></con:property><con:property><con:name>ownerId</con:name><con:value>210026</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>5e996360-78cd-40b3-9dbf-c8a6a9b6d5ae</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>74f0654a-b026-4076-923d-6f9fc035efdd</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>8bcc74da-55d3-493d-9bd3-9acc0d93dc9e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>d0014a1d-adc9-4211-bcbe-8f4f57160c6b</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>
