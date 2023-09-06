@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="85ffb87c-27f5-4e32-822b-2a6475bca519" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Attachment-downLoad-upload-update- delete" searchProperties="true" timeout="0" disabled="true" xmlns:con="http://eviware.com/soapui/config"><con:settings id="f250e695-06e3-4534-86ba-5a8077ccf4e9"><con:setting id="85ffb87c-27f5-4e32-822b-2a6475bca519fileName">Attachment-downLoad-upload-update--delete</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="get  shared donor and recipient Ids" id="d7dac187-e6c8-445b-9a8c-4b9a7c72f37c"><con:settings/><con:config><script>def tSuite = testRunner.getTestCase().getTestSuite()
+def tCase = testRunner.getTestCase()
+
+tCase.setPropertyValue("donorId", context.expand( '${#TestSuite#donorId}' ) )
+tCase.setPropertyValue("recipientId", context.expand( '${#TestSuite#recipientId}' ))
+
+
+tCase.setPropertyValue("offerAttachmentId", context.expand( '${#TestSuite#offerAttachmentId}' ))   
+ 
+def attachmentOwnerId = context.expand( '${#TestSuite#attachmentOwnerId}' )
+tCase.setPropertyValue("attachmentOwnerId", attachmentOwnerId)    
+</script></con:config></con:testStep><con:testStep type="request" id="a3adf023-ada4-4479-b4f4-b0935ddc674f" name="downloadAttachment"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>downloadAttachment</con:operation><con:request name="downloadAttachment" id="b07c98ee-1b5d-4038-8f6b-1cdeeb7eb6d5"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="WsdlSettings@enable-mtom">true</con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@force_mtom">false</con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@disable-multipart-attachments">true</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:downloadAttachment>
+         
+         <arg0>${#TestCase#donorId}</arg0><arg1>${#TestCase#offerAttachmentId}</arg1>
+      </ctr:downloadAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Not SOAP Fault Assertion" id="38ae2bf2-1690-4800-9ab2-cbbe60e503e8" name="SOAP Fault"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/downloadAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" id="543a0c42-8fb5-46bb-a4f1-27a97caa9d07" name="uploadAttachment"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>uploadAttachment</con:operation><con:request name="uploadAttachment" id="190cc1ac-90b0-4c21-be44-54c79f2f5e32"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:uploadAttachment>
+        <arg0>
+            <attachmentID>0</attachmentID>
+            
+            <nationalID>${#TestCase#donorId}</nationalID><attachmentSection>
+               <bizRef>OFFERS_XM</bizRef>
+            </attachmentSection>
+            <description>OFFERS_XM attachment # 105 description: some textual description.</description>
+            <sideBysideFlag>true</sideBysideFlag><ownerID>${#TestCase#attachmentOwnerId}</ownerID>
+         </arg0>
+         <arg1>
+            <attachmentData>cid:all-tests.html</attachmentData>
+            <filename>all-tests.html</filename>
+         </arg1>
+      </ctr:uploadAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Not SOAP Fault Assertion" id="f43f9b48-30cd-4904-a164-bd31ef22404d" name="SOAP Fault"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/uploadAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" id="1fee2258-5d3a-4c13-b498-348bc976bea9" name="updateAttachment"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>updateAttachment</con:operation><con:request name="updateAttachment" id="601bc31c-c9bb-4e38-ae48-2ad9f398bc0d"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:updateAttachment>
+         <arg0>
+            <attachmentID>${#TestCase#attachmentID}</attachmentID>
+            <nationalID>${#TestCase#donorId}</nationalID>
+            <attachmentSection>
+               <bizRef>OFFERS_XM</bizRef>
+            </attachmentSection>
+            <description>changed text</description>
+            <sideBysideFlag>true</sideBysideFlag>
+            <ownerID>${#TestCase#attachmentOwnerId}</ownerID>
+         </arg0>
+      </ctr:updateAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Not SOAP Fault Assertion" id="0ea28043-be4d-445e-bc39-9a05776910bb" name="SOAP Fault"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/updateAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" id="edaccb51-3d1d-4722-b662-ed110af0ca4f" name="deleteAttachment"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>deleteAttachment</con:operation><con:request name="deleteAttachment" id="bc64beb5-047c-42dd-a6bf-ae47bfaf736e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:deleteAttachment>
+         <arg0>${#TestCase#donorId}</arg0>
+         <arg1>${#TestCase#offerAttachmentId}</arg1>
+         <arg2>Deleted for testing.</arg2>
+      </ctr:deleteAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Not SOAP Fault Assertion" id="324af009-ae63-4d22-98df-d8d425ef76fe" name="SOAP Fault"/><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/deleteAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:properties><con:property><con:name>donorId</con:name><con:value>CTD045222</con:value></con:property><con:property><con:name>recipientId</con:name><con:value>CTR045502</con:value></con:property><con:property><con:name>attachmentID</con:name><con:value>72670</con:value></con:property><con:property><con:name>fileName</con:name><con:value>all-tests.html</con:value></con:property><con:property><con:name>offerAttachmentId</con:name><con:value>72832</con:value></con:property><con:property><con:name>attachmentOwnerId</con:name><con:value>16236</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>82699590-0bdd-4425-8d72-e17fcf187f44</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>15381076-b5bc-41f7-b5fd-7ee2f6a04e7d</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

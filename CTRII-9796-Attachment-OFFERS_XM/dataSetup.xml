@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="f50d85be-22f2-445e-8f15-898a1e4a1c76" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="dataSetup" searchProperties="true" timeout="0" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" zephyrTestName="" zephyrTestId="" xmlns:con="http://eviware.com/soapui/config"><con:description id="ef65046e-595a-485a-99c2-61d5727ec581">Setup test data.
+note:  since Ws cannot upload attachments the the  OFFERS_XM section, date existing CTR patient  and offerXmId.</con:description><con:settings><con:setting id="f50d85be-22f2-445e-8f15-898a1e4a1c76fileName">dataSetup</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="TestSuiteData- hard  code Existing donor with OFFERS_XM" id="9266a718-3b75-4a72-a055-0588fee3bc8e"><con:settings/><con:config><script>def tSuite = testRunner.getTestCase().getTestSuite()
+
+tSuite.setPropertyValue("recipientId", null )
+tSuite.setPropertyValue("donorId", null )
+tSuite.setPropertyValue("offerId", null )
+tSuite.setPropertyValue("offerXmId", null )
+
+// change the 'isLocalHost' to false when  not running on local host assume running on Test3 when not on local
+// get from global properties:
+def isLocalHost = context.expand( '${isLocalHost}' ).toBoolean()
+log.info "from  global props: isLocalHost = "+isLocalHost.toString()
+
+if(isLocalHost)
+{
+	// localhost values
+	tSuite.setPropertyValue("recipientId", "CTR043552" )
+	tSuite.setPropertyValue("donorId", "CTD043663" )
+	tSuite.setPropertyValue("offerId", "31249" )
+	tSuite.setPropertyValue("offerXmId", "15909" )
+	log.info "Running on: -------------> localHost"
+}
+else
+{
+	//Test3 values
+	tSuite.setPropertyValue("recipientId", "CTR044396" )
+	tSuite.setPropertyValue("donorId", "CTD045222" )
+	tSuite.setPropertyValue("offerId", "31788" )
+	tSuite.setPropertyValue("offerXmId", "16236" )
+	log.info "Running on: -----------> Test3"
+}
+</script></con:config></con:testStep><con:testStep type="groovy" name="TestSuiteData" id="f75b403a-7a09-4a02-8d53-e5e0d302764d"><con:settings/><con:config><script>def tSuite = testRunner.getTestCase().getTestSuite()
+
+    tSuite.setPropertyValue("donorDeathTypeId", "1")
+    tSuite.setPropertyValue("donorFacility-1-Id", "17")
+    tSuite.setPropertyValue("donorFacility-2-Id", "3")
+    tSuite.setPropertyValue("donorTypeId", "4")
+    tSuite.setPropertyValue("recipientHlaLabId", "93")
+    tSuite.setPropertyValue("recipientOdoId", "23")
+    tSuite.setPropertyValue("recipientPrefix", "QT-")
+    tSuite.setPropertyValue("recipientTxCenterId", "92")
+    tSuite.setPropertyValue("recipientProvId", "11")
+    tSuite.setPropertyValue("phinProvince", "11")
+    tSuite.setPropertyValue("city", "Montreal")
+    //tSuite.setPropertyValue("recipientId", null)
+    //tSuite.setPropertyValue("donorId", null)
+</script></con:config></con:testStep><con:testStep type="request" id="6888410b-4192-4e07-812a-efe7b484973d" name="findattachmentOffer - filter attachment section: OFFER_XM"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>findOfferAttachments</con:operation><con:request name="findattachmentOffer - filter attachment section: OFFER_XM" id="02f31c12-f086-4ffa-b54c-97a236f85d42"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:findOfferAttachments>
+         
+         <arg0>${#TestSuite#offerId}</arg0><arg1>
+            <bizRef>OFFERS_XM</bizRef>
+         </arg1>
+      </ctr:findOfferAttachments>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="2fb30936-55e7-4863-ad95-116afbfde23a" name="Not SOAP Fault"/><con:assertion type="Schema Compliance" id="1c42e19d-8730-4f0f-a469-d737bd707c35" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Simple Contains" id="e2805f7d-2c12-42fe-b38b-8ace10772b4f" name="Contains:  &lt;bizRef>OFFERS_XM&lt;/bizRef> "><con:configuration><token> &lt;bizRef>OFFERS_XM&lt;/bizRef></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:assertion type="Simple Contains" id="4304abc1-e74a-4e04-b4e4-dc94ea354d21" name="Contains: &lt;ownerID>${#TestSuite#offerXmId}&lt;/ownerID>  "><con:configuration><token>&lt;ownerID>${#TestSuite#offerXmId}&lt;/ownerID></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/findOfferAttachmentsRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="TestSuiteData-  OFFERS_XM info" id="82b70864-bf07-4727-96bb-bc9c177616d6"><con:settings/><con:config><script>def tSuite = testRunner.getTestCase().getTestSuite()
+
+def offerAttachmentId = context.expand( '${findattachmentOffer - filter attachment section: OFFER_XM#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findOfferAttachmentsResponse[1]/return[1]/attachmentID[1]}' )
+
+tSuite.setPropertyValue("offerAttachmentId", offerAttachmentId)
+
+def attachmentOwnerId = context.expand( '${findattachmentOffer - filter attachment section: OFFER_XM#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findOfferAttachmentsResponse[1]/return[1]/ownerID[1]}' )
+
+tSuite.setPropertyValue("attachmentOwnerId", attachmentOwnerId)</script></con:config></con:testStep><con:setupScript/><con:tearDownScript/><con:properties><con:property><con:name>recRndId</con:name><con:value>16787179246</con:value></con:property><con:property><con:name>donorRndId</con:name><con:value>16787179248</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>e12207d3-9300-4bff-8317-c0a850bbbb01</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>a90d48a0-6a89-4fca-943e-c02b5c202731</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>8559be25-eb38-43e5-a6cd-a770db3f03ad</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>c4bd1cd2-8e20-4008-abd3-e7b7fa9dd8cb</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="9dc93969-021b-44b8-b411-ae84f7e3c4cf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="e9a5af60-ffca-453b-bb58-ce01a1afd088"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a85e0134-5f13-45fb-a70f-506a7b0f6cb7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="12d06a30-f96b-43e6-81dd-fbfd63c0fa7d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="e95a6a6a-c8e1-43f2-8369-17f838f8c544"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="c36b7646-8f30-45c2-8ff8-51c9e8ef7355"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="e865aa34-7c7c-4f2f-b54e-52909cc8c871"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="cbc6d9e7-0009-492b-982d-08d836ee3d2e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="0db12ce5-e383-4c13-9970-577d34e87183"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>
