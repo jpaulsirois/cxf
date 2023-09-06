@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:operation id="c619b5cd-0521-47cf-acda-9b232eb3f1b8" isOneWay="false" action="" name="findOfferAttachments" bindingOperationName="findOfferAttachments" type="Request-Response" outputName="findOfferAttachmentsResponse" inputName="findOfferAttachmentsRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://eviware.com/soapui/config"><con:settings id="a6001268-a531-42e1-b29d-d3aba3486e3e"><con:setting id="c619b5cd-0521-47cf-acda-9b232eb3f1b8fileName">findOfferAttachments</con:setting></con:settings><con:call id="fde4fede-2000-4c9f-8754-26ead75597e0" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">\r
+   <soapenv:Header>\r
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">\r
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">\r
+            <wsse:Username>WS_QC</wsse:Username>\r
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>\r
+         </wsse:UsernameToken>\r
+      </wsse:Security>\r
+   </soapenv:Header>\r
+   <soapenv:Body>\r
+      <ctr:findOfferAttachments>\r
+         <arg0>CTR043690</arg0>\r
+      </ctr:findOfferAttachments>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://ctr3ws.cbs.com/ExternalCtr3WS/findOfferAttachmentsRequest"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="4635534f-9f44-4239-8f0d-4d0eb5797727"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="dab9f225-084f-482f-b431-f34f78079bd6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:call><con:environmentSpec><con:entry environmentId="77263e2f-5622-4bfa-b189-46a6879138dd"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="4635534f-9f44-4239-8f0d-4d0eb5797727"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="dab9f225-084f-482f-b431-f34f78079bd6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:operation>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="4a6f60a9-3e77-4fe3-b19b-5738b519afd1" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="setupAttachtmentsFolder" searchProperties="true" timeout="0" xmlns:con="http://eviware.com/soapui/config"><con:settings id="06189818-d549-45fc-9386-4b955c3ec089"><con:setting id="4a6f60a9-3e77-4fe3-b19b-5738b519afd1fileName">setupAttachtmentsFolder</con:setting></con:settings><con:testStep type="groovy" name="setAttachmentsFolder" id="f2fd46b2-c27a-4fa3-8a97-36f8d237e6ef"><con:description>Attachment files folder by convention will  be located at: '${projectDir}'/attachments.)  </con:description><con:settings/><con:config><script>// By convention the attaments file folder  will  be located at '${projectDir}'/attachments
+def projectPath = context.expand( '${projectDir}')
+log.info("projectPath: "+projectPath)
+
+// attachments folder
+def attachmentsFolder= projectPath + '/' + 'attachments'
+log.info("attachmentsFolder: "+attachmentsFolder)
+
+def tProject = testRunner.getTestCase().getTestSuite().getProject()
+log.info("tProject : "+tProject )
+
+// set custom  project  property
+tProject.setPropertyValue("attachmentsFolder", attachmentsFolder)
+</script></con:config></con:testStep><con:properties/><con:reportParameters/><con:environmentSpec><con:entry environmentId="dab9f225-084f-482f-b431-f34f78079bd6"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>
