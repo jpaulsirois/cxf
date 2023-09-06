@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="04ed3c7c-45c7-46fc-9afa-9db208f0f0fe" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Delete attachment Donor" searchProperties="true" timeout="0" xmlns:con="http://eviware.com/soapui/config"><con:description id="18f938b9-47db-4884-bf36-97f98b2cf30e">Delete attachments for the following donor sections: PATIENT_PERSONAL, PATIENT_CONTACT, ASSESSMENT, PATIENT_HLA, DECLARATION_OF_DEATH</con:description><con:settings><con:setting id="04ed3c7c-45c7-46fc-9afa-9db208f0f0fefileName">Delete-attachment-Donor</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="get  shared donor and recipient Ids" id="d828b51e-421c-4580-8843-7878f0671cf5"><con:settings/><con:config><script>def tSuite = testRunner.getTestCase().getTestSuite()
+def tCase = testRunner.getTestCase()
+
+    tCase.setPropertyValue("donorId", context.expand( '${#TestSuite#donorId}' ) )
+    tCase.setPropertyValue("recipientId", context.expand( '${#TestSuite#recipientId}' ))
+
+    tCase.setPropertyValue("updateCount", 1.toString())</script></con:config></con:testStep><con:testStep type="request" id="266fbeda-94f6-48ce-800f-56da22fc8af1" name="findAttachments-donor"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>findAttachments</con:operation><con:request name="findAttachments-donor" id="91c04e7e-f1fa-4e8f-ae93-7f98497cb153"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:findAttachments>
+         
+         <arg0>${#TestCase#donorId}</arg0>
+      </ctr:findAttachments>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="f75103c6-95fc-4e89-8bcd-bfdaff813343" name="Not SOAP Fault"/><con:assertion type="Schema Compliance" id="b43fa073-f681-491d-a8b4-8ab1d91ea794" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Simple Contains" id="d33d32d8-9826-4320-9ff7-c640f7dbb8db" name="Contains: &lt;bizRef>ASSESSMENT&lt;/bizRef> "><con:configuration><token>&lt;bizRef>ASSESSMENT&lt;/bizRef></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/findAttachmentsRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="groovy" name="save attachmentID- fileName- ownerId" id="8c95f124-3cd5-434f-9fd6-a93604562ecb"><con:settings/><con:config><script>def tSuite = testRunner.getTestCase().getTestSuite()
+def tCase = testRunner.getTestCase()
+
+
+
+// PATIENT_PERSONAL
+def attachmentID_PATIENT_PERSONAL= context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[1]/attachmentID[1]}' )
+tCase.setPropertyValue("attachmentID_PATIENT_PERSONAL", attachmentID_PATIENT_PERSONAL )
+
+def file_PATIENT_PERSONAL = context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[1]/fileName[1]}' )
+tCase.setPropertyValue("file_PATIENT_PERSONAL", file_PATIENT_PERSONAL )
+
+def ownerID_PATIENT_PERSONAL = context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[1]/ownerID[1]}' )
+tCase.setPropertyValue("ownerID_PATIENT_PERSONAL", ownerID_PATIENT_PERSONAL)
+
+// PATIENT_CONTACT
+def attachmentID_PATIENT_CONTACT= context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[2]/attachmentID[1]}' )
+tCase.setPropertyValue("attachmentID_PATIENT_CONTACT", attachmentID_PATIENT_CONTACT )
+
+def file_PATIENT_CONTACT = context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[2]/fileName[1]}' )
+tCase.setPropertyValue("file_PATIENT_CONTACT", file_PATIENT_CONTACT )
+
+def ownerID_PATIENT_CONTACT = context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[2]/ownerID[1]}' )
+tCase.setPropertyValue("ownerID_PATIENT_CONTACT", ownerID_PATIENT_CONTACT)
+
+// ASSESSMENT
+def attachmentID_ASSESSMENT= context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[3]/attachmentID[1]}' )
+tCase.setPropertyValue("attachmentID_ASSESSMENT", attachmentID_ASSESSMENT )
+
+def file_ASSESSMENT = context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[3]/fileName[1]}' )
+tCase.setPropertyValue("file_ASSESSMENT", file_ASSESSMENT )
+
+def ownerID_ASSESSMENT = context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[3]/ownerID[1]}' )
+tCase.setPropertyValue("ownerID_ASSESSMENT", ownerID_ASSESSMENT)
+
+//PATIENT_HLA
+def attachmentID_PATIENT_HLA= context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[4]/attachmentID[1]}' )
+tCase.setPropertyValue("attachmentID_PATIENT_HLA", attachmentID_PATIENT_HLA )
+
+def file_PATIENT_HLA = context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[4]/fileName[1]}' )
+tCase.setPropertyValue("file_PATIENT_HLA", file_PATIENT_HLA )
+
+def ownerID_PATIENT_HLA = context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[4]/ownerID[1]}' )
+tCase.setPropertyValue("ownerID_PATIENT_HLA", ownerID_PATIENT_HLA)
+
+//DECLARATION_OF_DEATH
+def attachmentID_DECLARATION_OF_DEATH= context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[5]/attachmentID[1]}' )
+tCase.setPropertyValue("attachmentID_DECLARATION_OF_DEATH", attachmentID_DECLARATION_OF_DEATH )
+
+def file_DECLARATION_OF_DEATH = context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[5]/fileName[1]}' )
+tCase.setPropertyValue("file_DECLARATION_OF_DEATH", file_DECLARATION_OF_DEATH )
+
+def ownerID_DECLARATION_OF_DEATH = context.expand( '${findAttachments-donor#Response#declare namespace ns2=\'http://ctr3ws.cbs.com/\'; //ns2:findAttachmentsResponse[1]/return[5]/ownerID[1]}' )
+tCase.setPropertyValue("ownerID_DECLARATION_OF_DEATH", ownerID_DECLARATION_OF_DEATH)
+
+
+</script></con:config></con:testStep><con:testStep type="request" id="04f2469f-79dd-49bb-a1ed-35de47d8c1f7" name="deleteAttachment-PATIENT_PERSONAL"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>deleteAttachment</con:operation><con:request name="deleteAttachment-PATIENT_PERSONAL" id="bc64beb5-047c-42dd-a6bf-ae47bfaf736e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:deleteAttachment>
+         <arg0>${#TestCase#donorId}</arg0>
+         <arg1>${#TestCase#attachmentID_PATIENT_PERSONAL}</arg1>
+         <arg2>Deleted for testing.</arg2>
+      </ctr:deleteAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="7adeaf3e-03c6-401c-9aee-1aebf4e8a68d" name="Not SOAP Fault"/><con:assertion type="Schema Compliance" id="551aaac4-26bb-48a9-a938-ffe22b503e03" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Simple Contains" id="3991a937-8213-4c51-b9ab-948b20b8dbeb" name="Contains: &lt;return>true&lt;/return> "><con:configuration><token>&lt;return>true&lt;/return></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/deleteAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" id="46b7ff75-3331-436e-8d1e-265a8b433b3a" name="deleteAttachment-PATIENT_PERSONAL-2nd try"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>deleteAttachment</con:operation><con:request name="deleteAttachment-PATIENT_PERSONAL-2nd try" id="bc64beb5-047c-42dd-a6bf-ae47bfaf736e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:deleteAttachment>
+         <arg0>${#TestCase#donorId}</arg0>
+         <arg1>${#TestCase#attachmentID_PATIENT_PERSONAL}</arg1>
+         <arg2>Deleted for testing.</arg2>
+      </ctr:deleteAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Not SOAP Fault Assertion" id="2e6ecee9-0821-4cc1-99c1-f169b64bbf9a" name="SOAP Fault"/><con:assertion type="Schema Compliance" id="551aaac4-26bb-48a9-a938-ffe22b503e03" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Simple Contains" id="3991a937-8213-4c51-b9ab-948b20b8dbeb" name="Contains: ErrorID: attachment.error.patient.attachmentIDnotexist"><con:configuration><token>ErrorID: attachment.error.patient.attachmentIDnotexist;</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/deleteAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" id="60ee26ba-4368-4390-978b-102abb9bfcf6" name="deleteAttachment-PATIENT_CONTACT"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>deleteAttachment</con:operation><con:request name="deleteAttachment-PATIENT_CONTACT" id="bc64beb5-047c-42dd-a6bf-ae47bfaf736e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:deleteAttachment>
+         <arg0>${#TestCase#donorId}</arg0>
+         <arg1>${#TestCase#attachmentID_PATIENT_CONTACT}</arg1>
+         <arg2>Deleted for testing.</arg2>
+      </ctr:deleteAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="7adeaf3e-03c6-401c-9aee-1aebf4e8a68d" name="Not SOAP Fault"/><con:assertion type="Schema Compliance" id="551aaac4-26bb-48a9-a938-ffe22b503e03" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Simple Contains" id="3991a937-8213-4c51-b9ab-948b20b8dbeb" name="Contains: &lt;return>true&lt;/return> "><con:configuration><token>&lt;return>true&lt;/return></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/deleteAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" id="51caedf8-9861-45d6-b57e-7ee5c1f1344f" name="deleteAttachment-PATIENT_CONTACT-2nd try"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>deleteAttachment</con:operation><con:request name="deleteAttachment-PATIENT_CONTACT-2nd try" id="bc64beb5-047c-42dd-a6bf-ae47bfaf736e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:deleteAttachment>
+         <arg0>${#TestCase#donorId}</arg0>
+         <arg1>${#TestCase#attachmentID_PATIENT_CONTACT}</arg1>
+         <arg2>Deleted for testing.</arg2>
+      </ctr:deleteAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Not SOAP Fault Assertion" id="2e6ecee9-0821-4cc1-99c1-f169b64bbf9a" name="SOAP Fault"/><con:assertion type="Schema Compliance" id="551aaac4-26bb-48a9-a938-ffe22b503e03" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Simple Contains" id="3991a937-8213-4c51-b9ab-948b20b8dbeb" name="Contains: ErrorID: attachment.error.patient.attachmentIDnotexist"><con:configuration><token>ErrorID: attachment.error.patient.attachmentIDnotexist;</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/deleteAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" id="a7e10bd7-88f5-482f-b763-2dac05060563" name="deleteAttachment-ASSESSMENT"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>deleteAttachment</con:operation><con:request name="deleteAttachment-ASSESSMENT" id="bc64beb5-047c-42dd-a6bf-ae47bfaf736e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:deleteAttachment>
+         <arg0>${#TestCase#donorId}</arg0>
+         <arg1>${#TestCase#attachmentID_ASSESSMENT}</arg1>
+         <arg2>Deleted for testing.</arg2>
+      </ctr:deleteAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="7adeaf3e-03c6-401c-9aee-1aebf4e8a68d" name="Not SOAP Fault"/><con:assertion type="Schema Compliance" id="551aaac4-26bb-48a9-a938-ffe22b503e03" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Simple Contains" id="3991a937-8213-4c51-b9ab-948b20b8dbeb" name="Contains: &lt;return>true&lt;/return> "><con:configuration><token>&lt;return>true&lt;/return></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/deleteAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" id="b9446796-d3de-4888-8cbb-67c0841d674c" name="deleteAttachment-ASSESSMENT}-2nd try"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>deleteAttachment</con:operation><con:request name="deleteAttachment-ASSESSMENT}-2nd try" id="bc64beb5-047c-42dd-a6bf-ae47bfaf736e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:deleteAttachment>
+         <arg0>${#TestCase#donorId}</arg0>
+         <arg1>${#TestCase#attachmentID_ASSESSMENT}</arg1>
+         <arg2>Deleted for testing.</arg2>
+      </ctr:deleteAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Not SOAP Fault Assertion" id="2e6ecee9-0821-4cc1-99c1-f169b64bbf9a" name="SOAP Fault"/><con:assertion type="Schema Compliance" id="551aaac4-26bb-48a9-a938-ffe22b503e03" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Simple Contains" id="3991a937-8213-4c51-b9ab-948b20b8dbeb" name="Contains: ErrorID: attachment.error.patient.attachmentIDnotexist"><con:configuration><token>ErrorID: attachment.error.patient.attachmentIDnotexist;</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/deleteAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" id="eee56dfd-f998-41b2-bb14-aca277c45c2a" name="deleteAttachment-PATIENT_HLA"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>deleteAttachment</con:operation><con:request name="deleteAttachment-PATIENT_HLA" id="bc64beb5-047c-42dd-a6bf-ae47bfaf736e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:deleteAttachment>
+         <arg0>${#TestCase#donorId}</arg0>
+         <arg1>${#TestCase#attachmentID_PATIENT_HLA}</arg1>
+         <arg2>Deleted for testing.</arg2>
+      </ctr:deleteAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="7adeaf3e-03c6-401c-9aee-1aebf4e8a68d" name="Not SOAP Fault"/><con:assertion type="Schema Compliance" id="551aaac4-26bb-48a9-a938-ffe22b503e03" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Simple Contains" id="3991a937-8213-4c51-b9ab-948b20b8dbeb" name="Contains: &lt;return>true&lt;/return> "><con:configuration><token>&lt;return>true&lt;/return></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/deleteAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" id="0d2d662c-38c1-41c3-8b31-666363dc49d2" name="deleteAttachment-PATIENT_HLA-2nd try"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>deleteAttachment</con:operation><con:request name="deleteAttachment-PATIENT_HLA-2nd try" id="bc64beb5-047c-42dd-a6bf-ae47bfaf736e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:deleteAttachment>
+         <arg0>${#TestCase#donorId}</arg0>
+         <arg1>${#TestCase#attachmentID_PATIENT_HLA}</arg1>
+         <arg2>Deleted for testing.</arg2>
+      </ctr:deleteAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Not SOAP Fault Assertion" id="2e6ecee9-0821-4cc1-99c1-f169b64bbf9a" name="SOAP Fault"/><con:assertion type="Schema Compliance" id="551aaac4-26bb-48a9-a938-ffe22b503e03" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Simple Contains" id="3991a937-8213-4c51-b9ab-948b20b8dbeb" name="Contains: ErrorID: attachment.error.patient.attachmentIDnotexist"><con:configuration><token>ErrorID: attachment.error.patient.attachmentIDnotexist;</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/deleteAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" id="bb21d3b4-17d6-4422-b890-934ca3147af9" name="deleteAttachment-DECLARATION_OF_DEATH"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>deleteAttachment</con:operation><con:request name="deleteAttachment-DECLARATION_OF_DEATH" id="bc64beb5-047c-42dd-a6bf-ae47bfaf736e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:deleteAttachment>
+         <arg0>${#TestCase#donorId}</arg0>
+         <arg1>${#TestCase#attachmentID_DECLARATION_OF_DEATH}</arg1>
+         <arg2>Deleted for testing.</arg2>
+      </ctr:deleteAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Fault Assertion" id="7adeaf3e-03c6-401c-9aee-1aebf4e8a68d" name="Not SOAP Fault"/><con:assertion type="Schema Compliance" id="551aaac4-26bb-48a9-a938-ffe22b503e03" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Simple Contains" id="3991a937-8213-4c51-b9ab-948b20b8dbeb" name="Contains: &lt;return>true&lt;/return> "><con:configuration><token>&lt;return>true&lt;/return></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/deleteAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:testStep type="request" id="479a2a88-bbad-4fcc-823e-04a567d977d5" name="deleteAttachment-ORGAN_REQUESTS-2nd try"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ExternalCtr3WSPortBinding</con:interface><con:operation>deleteAttachment</con:operation><con:request name="deleteAttachment-ORGAN_REQUESTS-2nd try" id="bc64beb5-047c-42dd-a6bf-ae47bfaf736e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://ctr2test3.transplantregistry.ca:443/otd-ws/ctr3</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ctr="http://ctr3ws.cbs.com/">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+         <wsse:UsernameToken wsu:Id="UsernameToken-3" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>WS_BC</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Anypw123!</wsse:Password>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ctr:deleteAttachment>
+         <arg0>${#TestCase#donorId}</arg0>
+         <arg1>${#TestCase#attachmentID_DECLARATION_OF_DEATH}</arg1>
+         <arg2>Deleted for testing.</arg2>
+      </ctr:deleteAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Not SOAP Fault Assertion" id="2e6ecee9-0821-4cc1-99c1-f169b64bbf9a" name="SOAP Fault"/><con:assertion type="Schema Compliance" id="551aaac4-26bb-48a9-a938-ffe22b503e03" name="Schema Compliance"><con:configuration/></con:assertion><con:assertion type="Simple Contains" id="3991a937-8213-4c51-b9ab-948b20b8dbeb" name="Contains: ErrorID: attachment.error.patient.attachmentIDnotexist"><con:configuration><token>ErrorID: attachment.error.patient.attachmentIDnotexist;</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:wsaConfig action="http://ctr3ws.cbs.com/ExternalCtr3WS/deleteAttachmentRequest" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:request></con:config></con:testStep><con:properties><con:property><con:name>recipientId</con:name><con:value>CTR043786</con:value></con:property><con:property><con:name>organRequestId-kidney</con:name><con:value>151246</con:value></con:property><con:property><con:name>organRequestId-heart</con:name><con:value>151247</con:value></con:property><con:property><con:name>attachmentID_PATIENT_PERSONAL</con:name><con:value>75329</con:value></con:property><con:property><con:name>file_PATIENT_PERSONAL</con:name><con:value>C:\ReadyAPI/attachments/all-tests.html</con:value></con:property><con:property><con:name>ownerID_PATIENT_PERSONAL</con:name><con:value>51198</con:value></con:property><con:property><con:name>attachmentID_PATIENT_CONTACT</con:name><con:value>75330</con:value></con:property><con:property><con:name>file_PATIENT_CONTACT</con:name><con:value>C:\ReadyAPI/attachments/all-tests.html</con:value></con:property><con:property><con:name>ownerID_PATIENT_CONTACT</con:name><con:value>51198</con:value></con:property><con:property><con:name>attachmentID_PATIENT_HLA</con:name><con:value>75332</con:value></con:property><con:property><con:name>file_PATIENT_HLA</con:name><con:value>C:\ReadyAPI/attachments/all-tests.html</con:value></con:property><con:property><con:name>ownerID_PATIENT_HLA</con:name><con:value>210057</con:value></con:property><con:property><con:name>attachmentID_PATIENT_HEALTH</con:name><con:value>73264</con:value></con:property><con:property><con:name>file_PATIENT_HEALTH</con:name><con:value>all-tests.html</con:value></con:property><con:property><con:name>ownerID_PATIENT_HEALTH</con:name><con:value>202957</con:value></con:property><con:property><con:name>attachmentID_ORGAN_REQUESTS</con:name><con:value>73266</con:value></con:property><con:property><con:name>file_ORGAN_REQUESTS</con:name><con:value>all-tests.html</con:value></con:property><con:property><con:name>ownerID_ORGAN_REQUESTS</con:name><con:value>152766</con:value></con:property><con:property><con:name>donorId</con:name><con:value>CTD051198</con:value></con:property><con:property><con:name>updateCount</con:name><con:value>1</con:value></con:property><con:property><con:name>attachmentID_ASSESSMENT</con:name><con:value>75331</con:value></con:property><con:property><con:name>file_ASSESSMENT</con:name><con:value>C:\ReadyAPI/attachments/all-tests.html</con:value></con:property><con:property><con:name>ownerID_ASSESSMENT</con:name><con:value>210018</con:value></con:property><con:property><con:name>attachmentID_DECLARATION_OF_DEATH</con:name><con:value>75333</con:value></con:property><con:property><con:name>file_DECLARATION_OF_DEATH</con:name><con:value>C:\ReadyAPI/attachments/all-tests.html</con:value></con:property><con:property><con:name>ownerID_DECLARATION_OF_DEATH</con:name><con:value>10423</con:value></con:property></con:properties><con:reportParameters/><con:breakPoints><con:testStepId>c0bbed8d-d691-4ee1-a94c-ab1e51c1295b</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>2ba76627-623a-4660-900a-0e58bca09f48</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>33ecfc3d-1029-4191-9c39-a8fec69b66ff</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>33897dee-7b5f-44d1-be8d-31a8cff483c4</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>010ecfa2-4a9d-40f6-8891-b72f4035c492</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>7f4ad301-9f06-43de-bdb2-3d082229d6c8</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>14c2cbe7-ec94-424e-9ea7-d984ac6e8fab</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>be934d42-11c4-46f5-a477-792cb8c8d4c3</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>398a1f6d-4668-4eeb-b26c-f14778ed5829</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>1efd86b3-30ea-4613-84f4-80f6d4444f2e</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>

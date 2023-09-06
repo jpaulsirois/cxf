@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="0a554469-86f7-4102-98e2-753a400605d3" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="dataSetup" searchProperties="true" timeout="0" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" zephyrTestName="" zephyrTestId="" xmlns:con="http://eviware.com/soapui/config"><con:description id="01ff1cda-ca04-4e6e-b36b-c80e6569b488">Setup donor test data.</con:description><con:settings><con:setting id="0a554469-86f7-4102-98e2-753a400605d3fileName">dataSetup</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="ProjectData" id="b4e47a74-5993-4190-8082-bb06baae8a31"><con:settings/><con:config><script>def tSuite = testRunner.getTestCase().getTestSuite()
+
+    tSuite.setPropertyValue("donorDeathTypeId", "1")
+    tSuite.setPropertyValue("donorFacility-1-Id", "17")
+    tSuite.setPropertyValue("donorFacility-2-Id", "3")
+    tSuite.setPropertyValue("donorTypeId", "4")
+    tSuite.setPropertyValue("recipientHlaLabId", "93")
+    tSuite.setPropertyValue("recipientOdoId", "23")
+    tSuite.setPropertyValue("recipientPrefix", "QT-")
+    tSuite.setPropertyValue("recipientTxCenterId", "92")
+    tSuite.setPropertyValue("recipientProvId", "11")
+    tSuite.setPropertyValue("phinProvince", "11")
+    tSuite.setPropertyValue("city", "Montreal")
+    //tSuite.setPropertyValue("recipientId", null)
+    //tSuite.setPropertyValue("donorId", null)
+</script></con:config></con:testStep><con:testStep type="groovy" name="TestSuiteData" id="739dbf9f-5ff6-47ef-ac29-6aebd05e546a"><con:settings/><con:config><script>def tSuite = testRunner.getTestCase().getTestSuite()
+
+    tSuite.setPropertyValue("donorDeathTypeId", "1")
+    tSuite.setPropertyValue("donorFacility-1-Id", "17")
+    tSuite.setPropertyValue("donorFacility-2-Id", "3")
+    tSuite.setPropertyValue("donorTypeId", "4")
+    tSuite.setPropertyValue("recipientHlaLabId", "93")
+    tSuite.setPropertyValue("recipientOdoId", "23")
+    tSuite.setPropertyValue("recipientPrefix", "QT-")
+    tSuite.setPropertyValue("recipientTxCenterId", "92")
+    tSuite.setPropertyValue("recipientProvId", "11")
+    tSuite.setPropertyValue("phinProvince", "11")
+    tSuite.setPropertyValue("city", "Montreal")
+    //tSuite.setPropertyValue("recipientId", null)
+    //tSuite.setPropertyValue("donorId", null)
+</script></con:config></con:testStep><con:testStep type="groovy" name="TestCaseData" id="b0c0d217-177d-4590-a38c-e871edeeb575" disabled="true"><con:settings/><con:config><script>import cbs.CtrUtils;
+
+def ctrUtils= new CtrUtils()
+def tCase = testRunner.getTestCase()
+
+tCase.setPropertyValue("recRndId", ctrUtils.getRndId().toString())
+tCase.setPropertyValue("donorRndId", ctrUtils.getRndId().toString())
+</script></con:config></con:testStep><con:setupScript/><con:tearDownScript/><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>e12207d3-9300-4bff-8317-c0a850bbbb01</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>a90d48a0-6a89-4fca-943e-c02b5c202731</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:environmentSpec><con:entry environmentId="9dc93969-021b-44b8-b411-ae84f7e3c4cf"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="e9a5af60-ffca-453b-bb58-ce01a1afd088"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="a85e0134-5f13-45fb-a70f-506a7b0f6cb7"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="12d06a30-f96b-43e6-81dd-fbfd63c0fa7d"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="e95a6a6a-c8e1-43f2-8369-17f838f8c544"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="c36b7646-8f30-45c2-8ff8-51c9e8ef7355"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="e865aa34-7c7c-4f2f-b54e-52909cc8c871"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="cbc6d9e7-0009-492b-982d-08d836ee3d2e"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="0db12ce5-e383-4c13-9970-577d34e87183"><con:authProfile>Inherit From Parent</con:authProfile></con:entry><con:entry environmentId="c94d917d-022b-4762-a9eb-762d7b0415eb"><con:authProfile>Inherit From Parent</con:authProfile></con:entry></con:environmentSpec></con:testCase>
