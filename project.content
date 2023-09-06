@@ -99,3 +99,6 @@ CTRII-9796-Attachment-methods%3A--Donor\findAttachments%3A-donor.xml
 CTRII-9796-Attachment-methods%3A--Donor\downLoadAttachment--donor.xml
 CTRII-9796-Attachment-methods%3A--Donor\update-Donor-Attachments.xml
 CTRII-9796-Attachment-methods%3A--Donor\Delete-attachment-Donor.xml
+CTRII-9796-deleteAttachment---OrganRequest\dataSetup.xml
+CTRII-9796-deleteAttachment---OrganRequest\createRecipient.xml
+CTRII-9796-deleteAttachment---OrganRequest\Delete-attachment.xml
