@@ -23,8 +23,8 @@ ExternalCtr3WSPortBinding\getCardioThoracicProfiles.xml
 ExternalCtr3WSPortBinding\getDonorHealth.xml
 ExternalCtr3WSPortBinding\getDonorMedications.xml
 ExternalCtr3WSPortBinding\getDonorUrinalysis.xml
-ExternalCtr3WSPortBinding\getHsHeartMatchResults.xml
 ExternalCtr3WSPortBinding\getHSPMatchforDonor.xml
+ExternalCtr3WSPortBinding\getHsHeartMatchResults.xml
 ExternalCtr3WSPortBinding\getMedicalHistory.xml
 ExternalCtr3WSPortBinding\getOfferDonorInfo.xml
 ExternalCtr3WSPortBinding\getOfferStateHistory.xml
@@ -47,10 +47,10 @@ ExternalCtr3WSPortBinding\listDonor.xml
 ExternalCtr3WSPortBinding\listWaitlistRecipients.xml
 ExternalCtr3WSPortBinding\makeHshOffer.xml
 ExternalCtr3WSPortBinding\makeOfferAgainstHSPMatch.xml
-ExternalCtr3WSPortBinding\previewHsHeartMatch.xml
 ExternalCtr3WSPortBinding\previewHSPMatchForDonor.xml
-ExternalCtr3WSPortBinding\runHsHeartMatch.xml
+ExternalCtr3WSPortBinding\previewHsHeartMatch.xml
 ExternalCtr3WSPortBinding\runHSPMatchOnDonor.xml
+ExternalCtr3WSPortBinding\runHsHeartMatch.xml
 ExternalCtr3WSPortBinding\updateAttachment.xml
 ExternalCtr3WSPortBinding\updateCardioThoracicProfile.xml
 ExternalCtr3WSPortBinding\updateDonor.xml
@@ -59,8 +59,8 @@ ExternalCtr3WSPortBinding\updateDonorMedications.xml
 ExternalCtr3WSPortBinding\updateDonorOrganState.xml
 ExternalCtr3WSPortBinding\updateDonorSerology.xml
 ExternalCtr3WSPortBinding\updateDonorUrinalysis.xml
-ExternalCtr3WSPortBinding\updateHlaTyping.xml
 ExternalCtr3WSPortBinding\updateHSPTransplant.xml
+ExternalCtr3WSPortBinding\updateHlaTyping.xml
 ExternalCtr3WSPortBinding\updateMedicalHistory.xml
 ExternalCtr3WSPortBinding\updateNotTransplanted.xml
 ExternalCtr3WSPortBinding\updateOfferState.xml
@@ -92,3 +92,10 @@ CTRII-9796-Attachment-methods%3A--Recipient\findAttachments%3A-recipient.xml
 CTRII-9796-Attachment-methods%3A--Recipient\downLoadAttachment--recipient.xml
 CTRII-9796-Attachment-methods%3A--Recipient\update-Attachments-Recipients.xml
 CTRII-9796-Attachment-methods%3A--Recipient\Delete-attachment-Recipient.xml
+CTRII-9796-Attachment-methods%3A--Donor\dataSetup.xml
+CTRII-9796-Attachment-methods%3A--Donor\createDonor.xml
+CTRII-9796-Attachment-methods%3A--Donor\Upload-Attachments-%3A-donor.xml
+CTRII-9796-Attachment-methods%3A--Donor\findAttachments%3A-donor.xml
+CTRII-9796-Attachment-methods%3A--Donor\downLoadAttachment--donor.xml
+CTRII-9796-Attachment-methods%3A--Donor\update-Donor-Attachments.xml
+CTRII-9796-Attachment-methods%3A--Donor\Delete-attachment-Donor.xml
