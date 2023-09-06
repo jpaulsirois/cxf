@@ -102,3 +102,12 @@ CTRII-9796-Attachment-methods%3A--Donor\Delete-attachment-Donor.xml
 CTRII-9796-deleteAttachment---OrganRequest\dataSetup.xml
 CTRII-9796-deleteAttachment---OrganRequest\createRecipient.xml
 CTRII-9796-deleteAttachment---OrganRequest\Delete-attachment.xml
+CTRII-9796-Reported-Bug-Tests\dataSetup.xml
+CTRII-9796-Reported-Bug-Tests\createRecipient.xml
+CTRII-9796-Reported-Bug-Tests\createDonor.xml
+CTRII-9796-Reported-Bug-Tests\Test-%3A-upload-multiple-attachments-to--ALL-recipient-and-donor-supported-attachment-sections..xml
+CTRII-9796-Reported-Bug-Tests\Test-Recipient-%3A-2-organ-requests-1-with-attachment%2C-the-other-without.xml
+CTRII-9796-Reported-Bug-Tests\Test-deleteAttachment-%3A-invalid-attachment-ID-and-no-delete-reason.xml
+CTRII-9796-Reported-Bug-Tests\Test-attachment-to-Health-tab-HEART.xml
+CTRII-9796-Reported-Bug-Tests\Test%3A-Invalid-attachment-description.xml
+CTRII-9796-Reported-Bug-Tests\Test%3A-Update-Attachment-with-no-ownerId.xml
